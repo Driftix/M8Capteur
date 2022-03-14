@@ -1,4 +1,4 @@
-package ParserGPX;
+package parseretgpx;
 
 import android.util.Xml;
 import org.xmlpull.v1.XmlPullParser;

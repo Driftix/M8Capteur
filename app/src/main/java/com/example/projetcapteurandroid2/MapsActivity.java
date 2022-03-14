@@ -11,6 +11,20 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.projetcapteurandroid2.databinding.ActivityMapsBinding;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import parseretgpx.GPX;
+import parseretgpx.Parser;
+import parseretgpx.Track;
+import parseretgpx.TrackPoint;
+import parseretgpx.TrackSeg;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -42,7 +56,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        try {
+            InputStream input = getAssets().open("bikeandrun.gpx");
+            try {
+                GPX gpx = Parser.parse(input);
+                for(Track track: gpx.getTracks()){
+                    for(TrackSeg trackSeg: track.getTrackSegs()){
+                        PolylineOptions polylineOptions = new PolylineOptions().clickable(false);
+                        for(TrackPoint trackPoint: trackSeg.getTrackPoints()){
+                            polylineOptions.add(new LatLng(trackPoint.getLatitude(), trackPoint.getLongitude()));
+                        }
+                        googleMap.addPolyline(polylineOptions);
+                    }
+                }
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
+            }
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));

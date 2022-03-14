@@ -1,4 +1,4 @@
-package ParserGPX;
+package parseretgpx;
 
 import com.google.android.gms.maps.model.LatLngBounds;
 

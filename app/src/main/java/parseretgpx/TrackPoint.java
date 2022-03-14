@@ -1,4 +1,4 @@
-package ParserGPX;
+package parseretgpx;
 /**
  * Created by artz on 24/12/14.
  */
