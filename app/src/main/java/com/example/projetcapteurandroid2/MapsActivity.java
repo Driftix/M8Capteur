@@ -3,6 +3,7 @@ package com.example.projetcapteurandroid2;
 import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -58,12 +59,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         try {
             InputStream input = getAssets().open("bikeandrun.gpx");
+            Log.v("log","oui");
+
             try {
                 GPX gpx = Parser.parse(input);
                 for(Track track: gpx.getTracks()){
                     for(TrackSeg trackSeg: track.getTrackSegs()){
+
                         PolylineOptions polylineOptions = new PolylineOptions().clickable(false);
                         for(TrackPoint trackPoint: trackSeg.getTrackPoints()){
+                            Log.v("log",trackPoint.getLatitude() + " / " + trackPoint.getLongitude());
                             polylineOptions.add(new LatLng(trackPoint.getLatitude(), trackPoint.getLongitude()));
                         }
                         googleMap.addPolyline(polylineOptions);
